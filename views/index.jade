@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  input#trafficCameraCheckbox(type='checkbox', name='trafficCamera',onclick="toggleMarkers('Traffic camera')",checked=true) 
+  | Traffic camera data
+  input#inRoadMeasurementCheckbox(type='checkbox', name='inRoadMeasurement', onclick='toggleMarkers("In-road measuring")',checked=true)
+  | In-road Measurement data
+  input#mobilePhoneCheckbox(type='checkbox', name='mobilePhone', onclick='toggleMarkers("Mobile phone")',checked=true)
+  | Mobile phone data
+  input#connectedCarsCheckbox(type='checkbox', name='connectedCars', onclick='toggleMarkers("Connected car")',checked=true)
+  | Connected car data
+  div#map(style='height: 1200px;width: 1200px')
+
+block debug 
+  input#debugButton(type="button",name="debugButton",onclick="loadAllData()",value="Debug")
+
+
