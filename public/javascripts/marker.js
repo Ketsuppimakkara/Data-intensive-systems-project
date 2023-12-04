@@ -11,78 +11,71 @@ class observation{
 }
 
 var observations = [];
-
-function loadAllData(){
-    
-    
-    //TODO: get data from databases, and wait until its ready
+var markers = [];
 
 
-    var laMax = Math.ceil(6050);
-    var laMin = Math.floor(6307);
-    var loMax = Math.ceil(2733)
-    var loMin = Math.floor(2147)
-
-    i = 0
-    while (i < 5){
-        var latitude = (Math.random()*(laMax-laMin)+laMin)/100;
-        var longitude = (Math.random()*(loMax-loMin)+loMin)/100
-        var marker = L.marker([latitude,longitude]).addTo(map);
-        marker.bindPopup("<b>"+"Traffic camera"+" observation "+1+"</b><br>Timestamp: "+Date.now()+"<br>"+"Vehicle type:");
-        observations.push(new observation(1,1,"Traffic camera",latitude,longitude,Date.now(),marker))
-        i++
+async function loadData(sensorType){
+    var response;
+    switch(sensorType){
+        case "In-road measurement":
+            response = await fetch("/api/inroad");
+            break;
+        case "Traffic camera":
+            response = await fetch("/api/trafficcamera");
+            break;
+        case "Mobile data":
+            response = await fetch("/api/mobiledata");
+            break;
+        case "Connected car":
+            response = await fetch("/api/connectedcar");
+            break;
+        default:
+            throw new Error('Invalid sensortype');
     }
+    observations = await response.json();
+    clearMarkers(sensorType);
 
-    i = 0
-    while (i < 5){
-        var latitude = (Math.random()*(laMax-laMin)+laMin)/100;
-        var longitude = (Math.random()*(loMax-loMin)+loMin)/100
-        var marker = L.marker([latitude,longitude]).addTo(map);
-        marker.bindPopup("<b>"+"In-road measuring"+" observation "+1+"</b><br>Timestamp: "+Date.now()+"<br>"+"Vehicle type:");
-        observations.push(new observation(1,1,"In-road measuring",latitude,longitude,Date.now(),marker))
-        i++
-    }
-
-    i = 0
-    while (i < 5){
-        var latitude = (Math.random()*(laMax-laMin)+laMin)/100;
-        var longitude = (Math.random()*(loMax-loMin)+loMin)/100
-        var marker = L.marker([latitude,longitude]).addTo(map);
-        marker.bindPopup("<b>"+"Mobile phone"+" observation "+1+"</b><br>Timestamp: "+Date.now()+"<br>"+"Vehicle type:");
-        observations.push(new observation(1,1,"Mobile phone",latitude,longitude,Date.now(),marker))
-        i++
-    }
-
-    i = 0
-    while (i < 5){
-        var latitude = (Math.random()*(laMax-laMin)+laMin)/100;
-        var longitude = (Math.random()*(loMax-loMin)+loMin)/100
-        var marker = L.marker([latitude,longitude]).addTo(map);
-        marker.bindPopup("<b>"+"Connected car"+" observation "+1+"</b><br>Timestamp: "+Date.now()+"<br>"+"Vehicle type:");
-        observations.push(new observation(1,1,"Connected car",latitude,longitude,Date.now(),marker))
+    i = 0;
+    while (i < observations.length){
+        var marker = L.marker([observations[i].latitude,observations[i].longitude]).addTo(map);
+        popuptext = "<b>"+sensorType+" observation "+observations[i].observationid+"</b>";
+        for(const [key,value] of Object.entries(observations[i])){
+            popuptext = popuptext + "<br>"+`${key}: ${value}`;
+        }
+        marker.bindPopup(popuptext);
+        markers.push(new observation(observations[i].id,observations[i].sensorId,sensorType,observations[i].latitude,observations[i].longitude,observations[i].timestamp,marker))
         i++
     }
 }
 
 function toggleMarkers(sensorType){
-    for(i = 0; i<observations.length; i++){
-        if(observations[i].sensorType === sensorType){
-            if(observations[i].marker._popup._isOpen){
-                observations[i].marker.closePopup()
+    for(i = 0; i<markers.length; i++){
+        if(markers[i].sensorType === sensorType){
+            if(markers[i].marker._popup._isOpen){
+                markers[i].marker.closePopup()
             }
 
-            if(observations[i].marker._icon.style.display != 'none' | observations[i].marker._shadow.style.display != 'none'){
-                observations[i].marker._icon.style.display='none'
-                observations[i].marker._shadow.style.display='none'
+            if(markers[i].marker._icon.style.display != 'none' | markers[i].marker._shadow.style.display != 'none'){
+                markers[i].marker._icon.style.display='none'
+                markers[i].marker._shadow.style.display='none'
             }
             else{
-                observations[i].marker._icon.style.display=''
-                observations[i].marker._shadow.style.display=''
+                markers[i].marker._icon.style.display=''
+                markers[i].marker._shadow.style.display=''
             }
 
         }
     }
 
+}
+
+function clearMarkers(sensorType){
+    for(i = 0; i<markers.length; i++){
+        if(markers[i].sensorType === sensorType){
+                map.removeLayer(markers[i].marker)
+        }
+    }
+    markers = markers.filter((object) => object.sensorType != sensorType)
 }
 
 function addObservation(observation){

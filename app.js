@@ -3,10 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var inroaddb = require('./inroad_database');
-var mobiledatadb = require('./mobiledata_database');
-var trafficcameradb = require('./trafficcamera_database');
-var connectedcardb = require('./connectedcar_database');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
