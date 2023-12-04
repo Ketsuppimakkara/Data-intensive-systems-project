@@ -3,11 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var db = require('./inroad_database');
+var inroaddb = require('./inroad_database');
+var mobiledatadb = require('./mobiledata_database');
+var trafficcameradb = require('./trafficcamera_database');
+var connectedcardb = require('./connectedcar_database');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var inroadRouter = require('./routes/api/inroad');
+var mobiledataRouter = require('./routes/api/mobiledata');
+var trafficcameraRouter = require('./routes/api/trafficcamera');
+var connectedcarRouter = require('./routes/api/connectedcar');
 
 var app = express();
 
@@ -24,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/inroad',inroadRouter);
+app.use('/api/mobiledata',mobiledataRouter);
+app.use('/api/trafficcamera',trafficcameraRouter);
+app.use('/api/connectedcar',connectedcarRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
