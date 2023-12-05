@@ -1,20 +1,20 @@
 extends layout
 
 block content
-  input#trafficCameraCheckbox(type='checkbox', name='trafficCamera',onclick="toggleMarkers('Traffic camera')",checked=true) 
-  | Traffic camera data
-  input#inRoadMeasurementCheckbox(type='checkbox', name='inRoadMeasurement', onclick='toggleMarkers("In-road measurement")',checked=true)
-  | In-road Measurement data
-  input#mobilePhoneCheckbox(type='checkbox', name='mobilePhone', onclick='toggleMarkers("Mobile data")',checked=true)
-  | Mobile phone data
-  input#connectedCarsCheckbox(type='checkbox', name='connectedCars', onclick='toggleMarkers("Connected car")',checked=true)
-  | Connected car data
-  div#map(style='height: 1200px;width: 1200px')
-
-block debug 
-  input#debugButton(type="button",name="irdebugButton",onclick="loadData('In-road measurement')",value="inroad")
-  input#debugButton(type="button",name="tcdebugButton",onclick="loadData('Traffic camera')",value="trafficcam")
-  input#debugButton(type="button",name="mddebugButton",onclick="loadData('Mobile data')",value="mobiledata")
-  input#debugButton(type="button",name="ccdebugButton",onclick="loadData('Connected car')",value="connectedcar")
+  div(style='display: flex;justify-content:center;padding:5px')
+    input#debugButton(type="button",name="irdebugButton",onclick="loadData('In-road measurement')",value="Reload In-road data",style='margin:2px')
+    input#debugButton(type="button",name="tcdebugButton",onclick="loadData('Traffic camera')",value="Reload Traffic camera data",style='margin:2px')
+    input#debugButton(type="button",name="mddebugButton",onclick="loadData('Mobile data')",value="Reload Mobile data",style='margin:2px')
+    input#debugButton(type="button",name="ccdebugButton",onclick="loadData('Connected car')",value="Reload Connected car data",style='margin:2px')
+    input#trafficCameraCheckbox(type='checkbox', name='trafficCamera',onclick="toggleMarkers('Traffic camera')",checked=true) 
+    | Traffic camera data
+    input#inRoadMeasurementCheckbox(type='checkbox', name='inRoadMeasurement', onclick='toggleMarkers("In-road measurement")',checked=true)
+    | In-road Measurement data
+    input#mobilePhoneCheckbox(type='checkbox', name='mobilePhone', onclick='toggleMarkers("Mobile data")',checked=true)
+    | Mobile phone data
+    input#connectedCarsCheckbox(type='checkbox', name='connectedCars', onclick='toggleMarkers("Connected car")',checked=true)
+    | Connected car data
+  div(style='display: flex;justify-content:center')
+    div#map(style='height: 1200px;width: 1400px;padding:5px')
 
 

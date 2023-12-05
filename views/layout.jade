@@ -1,10 +1,10 @@
 html
     head
-        h1= title
-        p Welcome to #{title}
+        h1(style='display: flex;justify-content:center;padding:5px') Digitraffic
         link(rel='stylesheet', href='http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css')
+
+        
     body
-    block debug
     block content
     // Import leaflet source code from cdn and load other javascript files for initializing the map and rendering popups on the map //
     script(src='http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js')
