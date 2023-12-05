@@ -14,6 +14,20 @@ router.get('/',async function(req, res, next) {
         res.status(500).send("Internal Server Error");
     }
 });
+router.get('/:ids',async function(req, res, next) {
+    try{
+        const client = await pool.connect();
+        await client.query('PREPARE query AS SELECT * FROM OBSERVATION WHERE observationid in ('+req.params.ids+');');
+        result = await client.query('EXECUTE query;');
+        await client.query('DEALLOCATE query');
+        client.release();
+        res.status(200).send(result.rows);
+    }catch(err){
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+
+});
 router.post('/delete/:id',async function(req, res, next) {
     try{
         const client = await pool.connect();
