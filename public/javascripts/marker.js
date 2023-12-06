@@ -13,7 +13,7 @@ class observation{
 var observations = [];
 var markers = [];
 
-async function getbyId(){
+async function filterbyId(){
     ids = document.getElementById("idSearch").value.split(',')
     for(i = 0; i<markers.length; i++){
         hideMarker(markers[i].marker)
