@@ -5,8 +5,6 @@ var router = express.Router();
 /* GET data from multiple databases. */
 router.get('/',async function(req, res, next) {
     try{
-        console.log(req.query.operator)
-        console.log(req.query.speed)
         if(parseFloat(req.query.speed) != NaN){
             switch (req.query.operator){
                 case "lessthan":

@@ -31,8 +31,6 @@ async function getBySpeed(){
     }
     speed = document.getElementById("speedSearch").value.slice(1).trim();
 
-    console.log("/api/multidatabase?operator="+operator+"&speed="+speed)
-
     response = await fetch("/api/multidatabase?operator="+operator+"&speed="+speed);
     observations = await response.json();
 
@@ -106,7 +104,6 @@ function toggleMarkerDisplay(marker){
 }
 
 function toggleMarkers(sensorType){
-    console.log(sensorType)
     for(i = 0; i<markers.length; i++){
         if(markers[i].sensorType === sensorType){
             toggleMarkerDisplay(markers[i].marker)
