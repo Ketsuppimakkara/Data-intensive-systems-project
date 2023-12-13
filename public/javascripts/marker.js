@@ -13,18 +13,40 @@ class observation{
 var observations = [];
 var markers = [];
 
-async function filterbyId(){
-    ids = document.getElementById("idSearch").value.split(',')
-    for(i = 0; i<markers.length; i++){
-        hideMarker(markers[i].marker)
-        for(j = 0; j<ids.length; j++){
-            if(markers[i].id==ids[j]){
-                showMarker(markers[i].marker)
-            }
+async function getBySpeed(){
+    clearMarkers("In-road measurement")
+    clearMarkers("Traffic camera")
+    clearMarkers("Mobile data")
+    clearMarkers("Connected car")
+
+    operator = document.getElementById("speedSearch").value.charAt(0);
+    if(operator == '<'){
+        operator = 'lessthan'
+    }
+    if(operator == "="){
+        operator = 'equals'
+    }
+    if(operator == '>'){
+        operator = "morethan"
+    }
+    speed = document.getElementById("speedSearch").value.slice(1).trim();
+
+    console.log("/api/multidatabase?operator="+operator+"&speed="+speed)
+
+    response = await fetch("/api/multidatabase?operator="+operator+"&speed="+speed);
+    observations = await response.json();
+
+    while (i < observations.length){
+        var marker = L.marker([observations[i].latitude,observations[i].longitude]).addTo(map);
+        popuptext = "<b>"+observations[i].sensortype+" observation "+observations[i].observationid+"</b>";
+        for(const [key,value] of Object.entries(observations[i])){
+            popuptext = popuptext + "<br>"+`${key}: ${value}`;
         }
+        marker.bindPopup(popuptext);
+        markers.push(new observation(observations[i].observationid,observations[i].sensorId,observations[i].sensortype,observations[i].latitude,observations[i].longitude,observations[i].timestamp,marker))
+        i++
     }
 }
-
 
 
 async function loadData(sensorType){
@@ -84,6 +106,7 @@ function toggleMarkerDisplay(marker){
 }
 
 function toggleMarkers(sensorType){
+    console.log(sensorType)
     for(i = 0; i<markers.length; i++){
         if(markers[i].sensorType === sensorType){
             toggleMarkerDisplay(markers[i].marker)
@@ -99,13 +122,3 @@ function clearMarkers(sensorType){
     }
     markers = markers.filter((object) => object.sensorType != sensorType)
 }
-
-function addObservation(observation){
-    observations.push(observation);
-}
-
-function removeObservation(id){
-    var observationIndex = observations.findIndex(observation=> observation.id === id)
-    observations.splice(observationIndex,1)
-}
-

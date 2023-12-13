@@ -7,9 +7,9 @@ block content
     input#debugButton(type="button",name="mddebugButton",onclick="loadData('Mobile data')",value="Reload Mobile data",style='margin:2px')
     input#debugButton(type="button",name="ccdebugButton",onclick="loadData('Connected car')",value="Reload Connected car data",style='margin:2px')
   div(style='display: flex;justify-content:center;padding:5px')
-    |Filter by observationIDs
-    input#idSearch(type="textbox",placeholder="1,24,34")
-    input(type="button",name="submitSearch",onclick="filterbyId()",value="Filter")
+    |Filter by vehicle speed
+    input#speedSearch(type="textbox",placeholder=">80.0")
+    input(type="button",name="submitSearch",onclick="getBySpeed()",value="Filter")
 
     input#trafficCameraCheckbox(type='checkbox', name='trafficCamera',onclick="toggleMarkers('Traffic camera')",checked=true) 
     | Traffic camera data

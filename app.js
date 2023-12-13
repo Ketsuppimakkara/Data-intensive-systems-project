@@ -10,6 +10,7 @@ var inroadRouter = require('./routes/api/inroad');
 var mobiledataRouter = require('./routes/api/mobiledata');
 var trafficcameraRouter = require('./routes/api/trafficcamera');
 var connectedcarRouter = require('./routes/api/connectedcar');
+var multidatabaseRouter = require('./routes/api/multidatabase');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/inroad',inroadRouter);
 app.use('/api/mobiledata',mobiledataRouter);
 app.use('/api/trafficcamera',trafficcameraRouter);
 app.use('/api/connectedcar',connectedcarRouter);
+app.use('/api/multidatabase',multidatabaseRouter);
 
 
 // catch 404 and forward to error handler
